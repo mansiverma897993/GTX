@@ -1,10 +1,8 @@
 # GTX.SYS - AI Security Infrastructure for Solana Traders
 
-![GTX Cover Image](https://via.placeholder.com/1200x400/000000/22c55e?text=GTX.SYS+Intelligence+Terminal)
 
 GTX is a production-ready, AI-powered Solana trading security platform. It acts as an institutional-grade intelligence terminal designed to protect retail traders from rug pulls, scam tokens, sniper traps, and whale manipulation before they execute a trade. 
 
-Think of it as: **ChatGPT + Arkham + Photon + Jito = GTX**
 
 ## 🏗 System Architecture
 
