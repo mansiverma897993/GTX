@@ -8,9 +8,27 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
+interface RugResult {
+  safeScore: number;
+  rugProbability: number;
+  metrics: { liquidity: string; holderCount: string };
+  reasons: string[];
+}
+
+export function RugPredictor() {
   const [address, setAddress] = useState("");
   const [analyzing, setAnalyzing] = useState(false);
-  const [resultData, setResultData] = useState<any>(null);
+  const [resultData, setResultData] = useState<RugResult | null>({
+    safeScore: 82,
+    rugProbability: 18,
+    metrics: { liquidity: "$2.4M", holderCount: "14,204" },
+    reasons: [
+      "✅ Liquidity locked for 365 days",
+      "✅ Code contract matches safe SPL standards",
+      "⚠️ Dev wallet holds 12% of supply",
+      "❌ High risk: Top 10 holders own 65% of supply"
+    ]
+  });
 
   const handleAnalyze = async () => {
     if (!address) return;
@@ -87,7 +105,7 @@ import { useState } from "react";
                 <span className="text-white">ANALYZING CONTRACT...</span>
                 <span className={resultData.safeScore > 50 ? 'text-primary' : 'text-destructive'}>{resultData.safeScore > 50 ? 'SAFE' : 'HIGH RISK'}</span>
               </div>
-              <Progress value={resultData.safeScore} className={`h-2 ${resultData.safeScore > 50 ? 'bg-primary/20' : 'bg-destructive/20'}`} indicatorClassName={resultData.safeScore > 50 ? 'bg-primary' : 'bg-destructive'} />
+              <Progress value={resultData.safeScore} className={`h-2 ${resultData.safeScore > 50 ? 'bg-primary/20 [&_[data-slot=progress-indicator]]:bg-primary' : 'bg-destructive/20 [&_[data-slot=progress-indicator]]:bg-destructive'}`} />
             </div>
 
             <div className="grid grid-cols-2 gap-4">

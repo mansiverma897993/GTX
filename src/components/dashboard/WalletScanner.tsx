@@ -13,10 +13,23 @@ const MOCK_TARGETS = [
   { address: "MEV4xx...9aPz", type: "Sniper Bot", risk: "Medium" }
 ];
 
+interface WalletResult {
+  address: string;
+  balanceSol: string;
+  txCount: number;
+  riskLevel: string;
+  riskScore: number;
+  personality: string;
+  explanation: string;
+  metrics: { profit: string; winRate: string; avgHoldTime: string };
+  interactedContracts: { name: string; action: string }[];
+}
+
 export function WalletScanner() {
   const [address, setAddress] = useState("");
   const [scanning, setScanning] = useState(false);
-  const [resultData, setResultData] = useState<any>(null);
+  const [result, setResult] = useState(false);
+  const [resultData, setResultData] = useState<WalletResult | null>(null);
 
   const handleScan = async (scanAddress: string = address) => {
     if(!scanAddress) return;
