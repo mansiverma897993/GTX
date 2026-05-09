@@ -14,19 +14,19 @@ The following diagram illustrates the data flow and system architecture of the G
 graph TD
     User([User / Solana Trader]) --> App[Next.js Web Application]
     
-    subgraph GTX Intelligence Terminal
+    subgraph AppGroup [GTX Intelligence Terminal]
         App --> Predictor[AI Rug Predictor]
         App --> Scanner[Wallet DNA Scanner]
         App --> Terminal[Smart Execution Terminal]
     end
 
-    subgraph AI Risk Engine (Python/FastAPI)
+    subgraph AIGroup [AI Risk Engine]
         Predictor --> AI_API[Predictive Models]
         Scanner --> AI_API
         AI_API --> DataPool[(On-Chain Historical Data)]
     end
 
-    subgraph Solana Network (Devnet/Mainnet)
+    subgraph SolanaGroup [Solana Network]
         Terminal --> Jito[Jito MEV Bundle Execution]
         Terminal --> Anchor[GTX Registry Smart Contract]
         Jito --> Ledger[(Solana Ledger)]
