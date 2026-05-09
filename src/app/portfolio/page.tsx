@@ -15,7 +15,7 @@ export default function PortfolioPage() {
         setBalance(bal / LAMPORTS_PER_SOL);
       });
     } else {
-      setBalance(null);
+      setTimeout(() => setBalance(null), 0);
     }
   }, [publicKey, connection]);
 

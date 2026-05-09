@@ -13,7 +13,7 @@ export function LiveNodeMap() {
       active: false,
       size: Math.random() * 3 + 2,
     }));
-    setNodes(newNodes);
+    setTimeout(() => setNodes(newNodes), 0);
 
     // Randomly activate nodes to simulate network traffic
     const interval = setInterval(() => {

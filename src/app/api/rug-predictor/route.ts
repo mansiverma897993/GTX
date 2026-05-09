@@ -30,10 +30,10 @@ export async function POST(req: Request) {
 
     let score = seed % 100;
     let probability = 100 - score;
-    let liquidity = `$${(seed * 12345).toLocaleString()}`;
-    let holderCount = seed * 14;
+    const liquidity = `$${(seed * 12345).toLocaleString()}`;
+    const holderCount = seed * 14;
     
-    let reasons = [];
+    const reasons: string[] = [];
     
     if (!exists) {
       score = 10;

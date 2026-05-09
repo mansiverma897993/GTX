@@ -162,7 +162,7 @@ export function WalletScanner() {
                  </Button>
               </div>
               <div className="space-y-3 font-mono text-xs">
-                 {resultData.interactedContracts.map((c: any, idx: number) => (
+                 {resultData.interactedContracts.map((c: { name: string; action: string }, idx: number) => (
                    <div key={idx} className="flex justify-between items-center pb-2 border-b border-primary/10 last:border-0 last:pb-0">
                       <span className="text-muted-foreground">{c.name}</span>
                       <span className={c.action.includes('Deploy') || c.action.includes('Dump') ? 'text-destructive' : 'text-primary'}>{c.action}</span>

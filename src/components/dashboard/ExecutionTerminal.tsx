@@ -46,9 +46,10 @@ export function ExecutionTerminal() {
       });
 
       setTxSig(signature);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Trade failed:", error);
-      alert("Trade failed: " + error.message);
+      const err = error as Error;
+      alert("Trade failed: " + err.message);
     } finally {
       setLoading(false);
     }
