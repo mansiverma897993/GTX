@@ -16,17 +16,36 @@ const MOCK_TARGETS = [
 export function WalletScanner() {
   const [address, setAddress] = useState("");
   const [scanning, setScanning] = useState(false);
-  const [result, setResult] = useState(false);
+  const [resultData, setResultData] = useState<any>(null);
 
-  const handleScan = (scanAddress: string = address) => {
+  const handleScan = async (scanAddress: string = address) => {
     if(!scanAddress) return;
     setAddress(scanAddress);
     setScanning(true);
     setResult(false);
-    setTimeout(() => {
+    setResultData(null);
+    
+    try {
+      const response = await fetch('/api/wallet-dna', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address: scanAddress }),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setResultData(data);
+        setResult(true);
+      } else {
+        alert(data.error || "Failed to scan wallet");
+      }
+    } catch (error) {
+      console.error("Scan error:", error);
+      alert("Network error connecting to AI engine.");
+    } finally {
       setScanning(false);
-      setResult(true);
-    }, 2000);
+    }
   };
 
   return (
@@ -65,43 +84,56 @@ export function WalletScanner() {
           </div>
         )}
 
-        {result && (
+        {result && resultData && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <div className="p-5 border border-destructive/40 bg-destructive/10 rounded-lg flex items-start gap-4 shadow-[0_0_15px_rgba(239,68,68,0.1)]">
-              <div className="p-3 bg-destructive/20 rounded-full shrink-0">
-                <AlertOctagon className="h-6 w-6 text-destructive" />
+            <div className={`p-5 border ${resultData.riskScore > 80 ? 'border-destructive/40 bg-destructive/10 shadow-[0_0_15px_rgba(239,68,68,0.1)]' : resultData.riskScore > 40 ? 'border-yellow-500/40 bg-yellow-500/10 shadow-[0_0_15px_rgba(234,179,8,0.1)]' : 'border-primary/40 bg-primary/10 shadow-[0_0_15px_rgba(34,197,94,0.1)]'} rounded-lg flex items-start gap-4`}>
+              <div className={`p-3 rounded-full shrink-0 ${resultData.riskScore > 80 ? 'bg-destructive/20' : resultData.riskScore > 40 ? 'bg-yellow-500/20' : 'bg-primary/20'}`}>
+                <AlertOctagon className={`h-6 w-6 ${resultData.riskScore > 80 ? 'text-destructive' : resultData.riskScore > 40 ? 'text-yellow-500' : 'text-primary'}`} />
               </div>
               <div className="w-full">
                 <div className="flex justify-between items-start mb-2">
-                   <h4 className="text-destructive font-mono text-lg font-bold">HIGH RISK DETECTED</h4>
-                   <Badge variant="outline" className="border-destructive text-destructive bg-destructive/10 font-mono">RISK SCORE: 94/100</Badge>
+                   <h4 className={`${resultData.riskScore > 80 ? 'text-destructive' : resultData.riskScore > 40 ? 'text-yellow-500' : 'text-primary'} font-mono text-lg font-bold uppercase`}>
+                     {resultData.riskLevel} RISK DETECTED
+                   </h4>
+                   <Badge variant="outline" className={`${resultData.riskScore > 80 ? 'border-destructive text-destructive bg-destructive/10' : resultData.riskScore > 40 ? 'border-yellow-500 text-yellow-500 bg-yellow-500/10' : 'border-primary text-primary bg-primary/10'} font-mono`}>
+                     RISK SCORE: {resultData.riskScore}/100
+                   </Badge>
                 </div>
                 <p className="text-muted-foreground text-sm font-mono leading-relaxed mb-4">
-                  This wallet exhibits behavioral patterns matching an <span className="text-destructive font-bold">insider accumulation</span> entity with high dump probability. Linked to 3 known rug-pull events across the Raydium ecosystem within the last 14 days.
+                  {resultData.explanation} <span className={`${resultData.riskScore > 80 ? 'text-destructive' : resultData.riskScore > 40 ? 'text-yellow-500' : 'text-primary'} font-bold`}>{resultData.personality}</span>
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <Badge variant="outline" className="border-primary/30 text-primary font-mono text-xs"><Fingerprint className="h-3 w-3 mr-1"/> Sybil Ring: Active</Badge>
-                  <Badge variant="outline" className="border-primary/30 text-primary font-mono text-xs"><Activity className="h-3 w-3 mr-1"/> Wash Trading: Yes</Badge>
+                  <Badge variant="outline" className="border-primary/30 text-primary font-mono text-xs">
+                    <Fingerprint className="h-3 w-3 mr-1"/> LIVE DEVNET DATA
+                  </Badge>
+                  <Badge variant="outline" className="border-primary/30 text-white font-mono text-xs">
+                     Bal: {resultData.balanceSol} SOL
+                  </Badge>
+                  <Badge variant="outline" className="border-primary/30 text-white font-mono text-xs">
+                     {resultData.txCount} Recent Txs
+                  </Badge>
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                <div className="border border-primary/20 p-4 rounded-lg bg-black/40 flex flex-col justify-center">
-                 <p className="text-[10px] text-muted-foreground font-mono mb-1 uppercase tracking-wider">Total Profit (30D)</p>
-                 <p className="text-xl text-primary font-mono font-bold">+$142,109.50</p>
+                 <p className="text-[10px] text-muted-foreground font-mono mb-1 uppercase tracking-wider">Estimated Profit (30D)</p>
+                 <p className={`text-xl font-mono font-bold ${resultData.metrics.profit.startsWith('-') ? 'text-destructive' : 'text-primary'}`}>
+                   {resultData.metrics.profit}
+                 </p>
                </div>
                <div className="border border-primary/20 p-4 rounded-lg bg-black/40 flex flex-col justify-center">
                  <p className="text-[10px] text-muted-foreground font-mono mb-1 uppercase tracking-wider">Win Rate</p>
-                 <p className="text-xl text-destructive font-mono font-bold">88.4%</p>
+                 <p className={`text-xl font-mono font-bold ${resultData.riskScore > 80 ? 'text-destructive' : 'text-primary'}`}>{resultData.metrics.winRate}</p>
                </div>
                <div className="border border-primary/20 p-4 rounded-lg bg-black/40 flex flex-col justify-center">
                  <p className="text-[10px] text-muted-foreground font-mono mb-1 uppercase tracking-wider">Avg Hold Time</p>
-                 <p className="text-xl text-white font-mono font-bold">14 Mins</p>
+                 <p className="text-xl text-white font-mono font-bold">{resultData.metrics.avgHoldTime}</p>
                </div>
                <div className="border border-primary/20 p-4 rounded-lg bg-black/40 flex flex-col justify-center">
-                 <p className="text-[10px] text-muted-foreground font-mono mb-1 uppercase tracking-wider">Tx Count (7D)</p>
-                 <p className="text-xl text-white font-mono font-bold">4,201</p>
+                 <p className="text-[10px] text-muted-foreground font-mono mb-1 uppercase tracking-wider">Tx Count (Devnet)</p>
+                 <p className="text-xl text-white font-mono font-bold">{resultData.txCount}</p>
                </div>
             </div>
 
@@ -117,18 +149,12 @@ export function WalletScanner() {
                  </Button>
               </div>
               <div className="space-y-3 font-mono text-xs">
-                 <div className="flex justify-between items-center pb-2 border-b border-primary/10">
-                    <span className="text-muted-foreground">PEPE/SOL Pool</span>
-                    <span className="text-destructive">-450 SOL (Dump)</span>
-                 </div>
-                 <div className="flex justify-between items-center pb-2 border-b border-primary/10">
-                    <span className="text-muted-foreground">JUP Staking</span>
-                    <span className="text-primary">+12,000 JUP (Accumulation)</span>
-                 </div>
-                 <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Unknown Contract (New)</span>
-                    <span className="text-yellow-400">Deployer Interaction</span>
-                 </div>
+                 {resultData.interactedContracts.map((c: any, idx: number) => (
+                   <div key={idx} className="flex justify-between items-center pb-2 border-b border-primary/10 last:border-0 last:pb-0">
+                      <span className="text-muted-foreground">{c.name}</span>
+                      <span className={c.action.includes('Deploy') || c.action.includes('Dump') ? 'text-destructive' : 'text-primary'}>{c.action}</span>
+                   </div>
+                 ))}
               </div>
             </div>
           </motion.div>
