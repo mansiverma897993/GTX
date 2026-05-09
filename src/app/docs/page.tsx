@@ -112,6 +112,47 @@ export default function DocsPage() {
             </div>
           </section>
 
+          <section id="tech-stack" className="space-y-6 pt-12 border-t border-primary/20">
+            <h2 className="text-3xl text-white font-bold">Tech Stack</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                <h3 className="text-xl text-primary font-bold mb-3">Frontend</h3>
+                <ul className="list-disc list-inside space-y-1">
+                  <li>Next.js & TypeScript</li>
+                  <li>Tailwind CSS & Shadcn UI</li>
+                  <li>Framer Motion</li>
+                  <li>Zustand & React Query</li>
+                </ul>
+              </div>
+              <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                <h3 className="text-xl text-primary font-bold mb-3">Backend</h3>
+                <ul className="list-disc list-inside space-y-1">
+                  <li>Node.js / NestJS</li>
+                  <li>PostgreSQL & Redis</li>
+                  <li>WebSockets for Real-time</li>
+                </ul>
+              </div>
+              <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                <h3 className="text-xl text-primary font-bold mb-3">Blockchain</h3>
+                <ul className="list-disc list-inside space-y-1">
+                  <li>Solana & Anchor</li>
+                  <li>@solana/web3.js</li>
+                  <li>Jupiter API & Jito SDK</li>
+                  <li>Helius API & QuickNode</li>
+                </ul>
+              </div>
+              <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                <h3 className="text-xl text-primary font-bold mb-3">AI Stack</h3>
+                <ul className="list-disc list-inside space-y-1">
+                  <li>Python & FastAPI</li>
+                  <li>Scikit-learn & XGBoost</li>
+                  <li>OpenAI API</li>
+                  <li>Pinecone / Qdrant (RAG)</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
           <section id="positioning" className="space-y-6 pt-12 border-t border-primary/20">
             <h2 className="text-3xl text-white font-bold">Final Product Positioning</h2>
             <p>Pitch GTX as:</p>

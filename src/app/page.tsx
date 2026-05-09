@@ -1,6 +1,7 @@
 import { RugPredictor } from "@/components/dashboard/RugPredictor";
 import { WalletScanner } from "@/components/dashboard/WalletScanner";
 import { ExecutionTerminal } from "@/components/dashboard/ExecutionTerminal";
+import { LiveNodeMap } from "@/components/dashboard/LiveNodeMap";
 
 export default function Home() {
   return (
@@ -26,7 +27,7 @@ export default function Home() {
         </div>
 
         {/* Right Column - Execution */}
-        <div className="lg:col-span-4 space-y-8">
+        <div className="lg:col-span-4 space-y-8 flex flex-col h-full">
           <ExecutionTerminal />
           
           {/* Live Feed Widget */}
@@ -47,6 +48,9 @@ export default function Home() {
               </div>
             </div>
           </div>
+          
+          {/* Animated Mempool Map to fill space */}
+          <LiveNodeMap />
         </div>
       </div>
     </main>

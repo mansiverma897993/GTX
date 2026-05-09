@@ -1,5 +1,6 @@
 import { RugPredictor } from "@/components/dashboard/RugPredictor";
 import { ExecutionTerminal } from "@/components/dashboard/ExecutionTerminal";
+import { LiveNodeMap } from "@/components/dashboard/LiveNodeMap";
 
 export default function AISecurityPage() {
   return (
@@ -14,8 +15,9 @@ export default function AISecurityPage() {
         <div className="lg:col-span-8 space-y-8">
           <RugPredictor />
         </div>
-        <div className="lg:col-span-4 space-y-8">
+        <div className="lg:col-span-4 space-y-8 flex flex-col h-full">
           <ExecutionTerminal />
+          <LiveNodeMap />
         </div>
       </div>
     </main>

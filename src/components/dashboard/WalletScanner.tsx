@@ -30,7 +30,7 @@ export function WalletScanner() {
   };
 
   return (
-    <Card className="border-primary/50 shadow-[0_0_15px_rgba(34,197,94,0.1)] bg-black/40 backdrop-blur-md h-full">
+    <Card className="border-primary/50 shadow-[0_0_15px_rgba(34,197,94,0.1)] bg-black/40 backdrop-blur-md">
       <CardHeader className="border-b border-primary/20 pb-4">
         <CardTitle className="text-primary font-mono flex items-center gap-2">
           <Fingerprint className="h-5 w-5" />
@@ -183,6 +183,34 @@ export function WalletScanner() {
                  ))}
                </div>
                <p className="text-center text-[10px] font-mono text-muted-foreground mt-4 italic">Click any address to test the scanner.</p>
+             </div>
+
+             {/* Global Network Stats */}
+             <div className="grid grid-cols-2 gap-4">
+                <div className="border border-primary/20 bg-primary/5 p-3 rounded flex flex-col justify-center items-center relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-primary/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                  <p className="text-[10px] text-muted-foreground font-mono mb-1 relative z-10">24H SCANS PERFORMED</p>
+                  <p className="text-lg text-primary font-mono font-bold relative z-10 animate-pulse">1,402,891</p>
+                </div>
+                <div className="border border-destructive/20 bg-destructive/5 p-3 rounded flex flex-col justify-center items-center relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-destructive/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                  <p className="text-[10px] text-muted-foreground font-mono mb-1 relative z-10">THREATS PREVENTED</p>
+                  <p className="text-lg text-destructive font-mono font-bold relative z-10">42,104</p>
+                </div>
+             </div>
+          </div>
+        )}
+
+        {!scanning && !result && (
+          <div className="pt-2">
+             <div className="bg-primary/5 border border-primary/20 rounded p-4">
+                <h4 className="text-primary font-mono text-xs font-bold mb-2 uppercase tracking-widest">Terminal Instructions</h4>
+                <ul className="text-[10px] text-muted-foreground font-mono space-y-2 list-disc list-inside">
+                   <li>Paste any Solana wallet address (e.g., from Solscan or Photon) into the input above.</li>
+                   <li>The AI will cross-reference the address against our proprietary database of known snipers, insider wallets, and rug-pullers.</li>
+                   <li>For a quick test, click any of the addresses in the Live Threat Feed.</li>
+                   <li><strong className="text-primary">Note:</strong> All audits can be permanently recorded on the Solana blockchain using the GTX Registry Smart Contract.</li>
+                </ul>
              </div>
           </div>
         )}
